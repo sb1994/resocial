@@ -3,6 +3,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
+const { notFound, errorHandler } = require("./middleware/error");
 const cors = require("cors");
 require("dotenv").config();
 
@@ -11,12 +12,16 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+//setup the middleware
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const users = require("./api/routes/users");
 
 app.use("/api/users", users);
 
+app.use(errorHandler);
+app.use(notFound);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
   app.get("*", (req, res) => {
