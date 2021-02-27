@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const jwt = require("jsonwebtoken");
 //function to create the auth token
 const createToken = require("../../utils/createToken");
 
@@ -50,6 +51,46 @@ router.post(
             token: createToken(savedUser._id),
           })
           .status(200);
+      }
+    }
+  })
+);
+router.post(
+  "/login",
+  asyncHandler(async (req, res) => {
+    // console.log(req);
+    let { email, password } = req.body;
+    console.log(req.body);
+    // find the user by email
+    const userExists = await User.findOne({ email });
+    console.log(userExists);
+    //if the user exist we then check the password
+    if (!userExists) {
+      res.status(401);
+      throw new Error("User email doesnt exist");
+    } else {
+      //check if the password was sent in the request
+      if (!password) {
+        res.status(401);
+        throw new Error("Password cannot be empty");
+      } else {
+        const match = await bcrypt.compare(password, userExists.password);
+        console.log(match);
+
+        if (match) {
+          const payload = {
+            _id: userExists._id,
+          };
+
+          const token = jwt.sign(payload, process.env.SECRET, {
+            expiresIn: 3600 * 1000 * 1000 * 20,
+          });
+
+          res.json({
+            userExists,
+            token,
+          });
+        }
       }
     }
   })
