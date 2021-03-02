@@ -14,6 +14,10 @@ const User = require("../models/User");
 router.get("/test", async (req, res) => {
   res.json({ msg: "Hello User Routes" });
 });
+router.get("/", async (req, res) => {
+  const users = await User.find();
+  res.json({ users });
+});
 router.post(
   "/register",
   asyncHandler(async (req, res) => {
