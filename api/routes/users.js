@@ -11,6 +11,9 @@ const asyncHandler = require("express-async-handler");
 
 const User = require("../models/User");
 
+//protective middleware
+const { protect } = require("../../middleware/auth");
+
 router.get("/test", async (req, res) => {
   res.json({ msg: "Hello User Routes" });
 });
@@ -18,6 +21,25 @@ router.get("/", async (req, res) => {
   const users = await User.find();
   res.json({ users });
 });
+router.get(
+  "/current",
+  asyncHandler(async (req, res) => {
+    // console.log(req.user);
+    let { id } = req.user;
+    //find the user by email
+    const user = await User.findById(id).select("-password");
+    // console.log(user);
+
+    //if the user exist we then check the password
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    } else {
+      res.json(user).status(200);
+    }
+  })
+);
 router.post(
   "/register",
   asyncHandler(async (req, res) => {
