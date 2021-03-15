@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-
-const UserSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+const UserSchema = new Schema({
   firstName: {
     type: String,
   },
@@ -18,6 +18,8 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  followers: [{ user: { type: Schema.Types.ObjectId, ref: "users" } }],
+  following: [{ user: { type: Schema.Types.ObjectId, ref: "users" } }],
   profile_pic: {
     type: String,
     default:

@@ -21,25 +21,114 @@ router.get("/", async (req, res) => {
   const users = await User.find();
   res.json({ users });
 });
-router.get(
-  "/current",
+router.get("/profile/:id", async (req, res) => {
+  let { id } = req.params;
+  const user = await User.findById(id);
+  res.json({ user });
+  // res.json("hello");
+});
+router.post(
+  "/profile/:id/follow",
+  protect,
   asyncHandler(async (req, res) => {
-    // console.log(req.user);
-    let { id } = req.user;
-    //find the user by email
-    const user = await User.findById(id).select("-password");
-    // console.log(user);
+    let { id } = req.params;
+    let { user } = req;
+    const currentUser = await User.findById(user._id);
+    const searchedUser = await User.findById(id);
 
-    //if the user exist we then check the password
+    let { following } = currentUser;
+    let { followers } = searchedUser;
 
-    if (!user) {
-      res.status(404);
-      throw new Error("User not found");
+    //checking if the followee's is in the current users following list
+    let followingIds = following.filter((user) =>
+      //checking if the user exists
+      user.user === id ? user : []
+    );
+
+    //checking if the current user is in the followee's follower list
+    let followerIds = followers.filter((follower) =>
+      //checking if the user exists
+      follower.user === user._id ? user : []
+    );
+
+    if (followingIds.length > 0 && followerIds.length > 0) {
+      console.log("user is already following this user");
+      throw new Error("user is already following this user");
     } else {
-      res.json(user).status(200);
+      //adding to the currentUser following list
+      let addedFollow = { user: searchedUser._id };
+      currentUser.following.push(addedFollow);
+
+      // adding the currentUser to the followees followers list
+      let addedFollower = {
+        user: user._id,
+      };
+      searchedUser.followers.push(addedFollower);
+
+      // saving both updatedUsers
+      let updatedCurrentUser = await currentUser.save();
+      let updatedSearchedUser = await searchedUser.save();
+      res.json({
+        searchedUser: updatedSearchedUser,
+        currentUser: updatedCurrentUser,
+      });
     }
   })
 );
+router.post(
+  "/profile/:id/unfollow",
+  protect,
+  asyncHandler(async (req, res) => {
+    let { id } = req.params;
+    let { user } = req;
+    console.log(user._id, id);
+    const searchedUser = await User.findById(id);
+    const currentUser = await User.findById(user._id);
+
+    // updating current users following list
+    let updatedFollowingList = currentUser.following.filter(
+      // (user) => user.user === id
+      (user) => {
+        user.user !== id;
+      }
+    );
+    currentUser.following = updatedFollowingList;
+    // updating the followees followers list
+    let updatedFollowerList = searchedUser.followers.filter(
+      // (user) => user.user === id
+      (user) => {
+        user.user !== user._id;
+      }
+    );
+    searchedUser.followers = updatedFollowerList;
+
+    let updatedSearchedUser = await searchedUser.save();
+    let updatedCurrentUser = await currentUser.save();
+
+    // res.json({ user });
+    res.json({
+      currentUser: updatedCurrentUser,
+      searchedUser: updatedSearchedUser,
+    });
+  })
+);
+router.get("/current", protect, async (req, res) => {
+  // console.log(req.user);
+  let { _id } = req.user;
+  // console.log(req.user);
+  //find the user by email
+  const user = await User.findById(_id).select("-password");
+  // console.log(user);
+
+  //if the user exist we then check the password
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  } else {
+    res.json(user).status(200);
+  }
+});
 router.post(
   "/register",
   asyncHandler(async (req, res) => {

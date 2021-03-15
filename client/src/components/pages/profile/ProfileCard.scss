@@ -1,0 +1,17 @@
+.profile-card {
+  &__img-container {
+    height: 20%;
+    text-align: center;
+  }
+  &__img {
+    border-radius: 50%;
+
+    height: 50%;
+  }
+  &__info-container {
+    display: flex;
+    justify-content: space-between;
+    height: 20%;
+    text-align: center;
+  }
+}

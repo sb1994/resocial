@@ -1,21 +1,22 @@
 import React, { useEffect } from "react";
-
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-const LandingPage = () => {
-  const history = useHistory();
+const ProfileEdit = () => {
   const auth = useSelector((state) => state.auth);
 
+  let { user, isAuthenticated } = auth;
+  const history = useHistory();
+
   useEffect(() => {
-    if (auth.isAuthenticated) {
-      history.push(`/dashboard/${auth.user._id}`);
+    if (!isAuthenticated) {
+      history.push("/login");
     }
-  }, []);
+  }, [isAuthenticated]);
   return (
     <div>
-      <h1>LandingPage</h1>
+      <h1>Profile Edit</h1>
     </div>
   );
 };
 
-export default LandingPage;
+export default ProfileEdit;

@@ -19,6 +19,11 @@ const LoginPage = () => {
     e.preventDefault();
     dispatch(loginAuth(email, password));
   };
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      history.push(`/dashboard/${auth.user._id}`);
+    }
+  }, []);
   return (
     <FormContainer>
       <Form onSubmit={submitHandler}>

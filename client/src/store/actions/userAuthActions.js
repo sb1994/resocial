@@ -55,7 +55,8 @@ export const getCurrentUser = () => async (dispatch) => {
   dispatch(setLoggedUserRequest());
   try {
     let { data } = await axios.get("/api/users/current");
-    dispatch(setLoggedUser(data.savedUser));
+
+    dispatch(setLoggedUser(data));
   } catch (error) {
     dispatch({
       type: types.FAIL_AUTH,
@@ -64,19 +65,54 @@ export const getCurrentUser = () => async (dispatch) => {
   }
 };
 export const getSearchedUser = (id) => async (dispatch) => {
-  axios
-    .get(`/api/users/${id}`)
-    // .get(`https://jsonplaceholder.typicode.com/todos/1`)
-    .then((result) => {
-      dispatch(setSearchedUser(result.data));
-      // console.log(result)
-    })
-    .catch((err) => {
-      console.log(err);
+  // gets the users profile based on the id dispatched from
+  // the url
+  try {
+    let { data } = await axios.get(`/api/users/profile/${id}`);
+    dispatch(setSearchedUser(data.user));
+  } catch (error) {
+    dispatch({
+      type: types.FAIL_AUTH,
+      payload: error.data.message,
     });
+  }
+};
+export const followUser = (id) => async (dispatch) => {
+  // follows the users profile based on the id dispatched from
+  // the url
+  try {
+    let { data } = await axios.post(`/api/users/profile/${id}/follow`);
+
+    console.log(data);
+    // dispatching the updated user data
+    dispatch(setSearchedUser(data.searchedUser));
+    dispatch(setLoggedUser(data.currentUser));
+  } catch (error) {
+    dispatch({
+      type: types.FAIL_AUTH,
+      payload: error.data.message,
+    });
+  }
+};
+export const unFollowUser = (id) => async (dispatch) => {
+  // gets the users profile based on the id dispatched from
+  // the url
+  try {
+    let { data } = await axios.post(`/api/users/profile/${id}/unfollow`);
+    console.log(data);
+    dispatch(setSearchedUser(data.searchedUser));
+    dispatch(setLoggedUser(data.currentUser));
+    // dispatch(setSearchedUser(data.user));
+  } catch (error) {
+    dispatch({
+      type: types.FAIL_AUTH,
+      payload: error.data.message,
+    });
+  }
 };
 
 export const setSearchedUser = (user) => {
+  // sets the payload of the user reducer
   return {
     type: types.SET_SEARCHED_USER,
     payload: user,
@@ -120,5 +156,5 @@ export const logoutUser = () => (dispatch) => {
   setUserToken(false);
   // Set current user to {} which will set isAuthenticated to false
   dispatch(setLoggedOutUser());
-  dispatch(setSearchedUser({}));
+  // dispatch(setSearchedUser({}));
 };

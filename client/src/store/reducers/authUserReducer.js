@@ -40,11 +40,11 @@ const auth = (state = initialState, action) => {
     //     ...state,
     //     users: action.payload,
     //   };
-    // case types.SET_SEARCHED_USER:
-    //   return {
-    //     ...state,
-    //     searchedUser: action.payload,
-    //   };
+    case types.SET_SEARCHED_USER:
+      return {
+        ...state,
+        searchedUser: action.payload,
+      };
     case types.START_AUTH:
       return {
         ...state,
