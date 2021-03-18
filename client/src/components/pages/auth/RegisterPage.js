@@ -16,14 +16,15 @@ const RegisterPage = () => {
   const history = useHistory();
   const auth = useSelector((state) => state.auth);
 
-  const { loading, error, isAuthenticated } = auth;
+  const { loading, error, user, isAuthenticated } = auth;
 
   useEffect(() => {
     if (isAuthenticated) {
       // history.push("/login");
+      history.push(`/dashboard/${user._id}`);
       // console.log('');
     }
-  }, [auth]);
+  }, [isAuthenticated]);
 
   const submitHandler = (e) => {
     e.preventDefault();

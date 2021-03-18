@@ -18,8 +18,8 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  followers: [{ user: { type: Schema.Types.ObjectId, ref: "users" } }],
-  following: [{ user: { type: Schema.Types.ObjectId, ref: "users" } }],
+  followers: [{ user: { type: Schema.Types.ObjectId, ref: "User" } }],
+  following: [{ user: { type: Schema.Types.ObjectId, ref: "User" } }],
   profile_pic: {
     type: String,
     default:

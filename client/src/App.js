@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./App.css";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import { Switch, Route } from "react-router-dom";
 // application pages that will be used in the route
 import LoginPage from "./components/pages/auth/LoginPage";
@@ -15,9 +16,10 @@ import NavBar from "./components/navigation/NavBar";
 import { Container } from "react-bootstrap";
 import ProfileEdit from "./components/pages/profile/ProfileEdit";
 import FollowersList from "./components/pages/profile/FollowersList";
+import FollowingList from "./components/pages/profile/FollowingList";
 const App = () => {
-  const [socket, setSocket] = useState(null);
-  const [currentUsers, setCurrentUsers] = useState([]);
+  // const [socket, setSocket] = useState(null);
+  // const [currentUsers, setCurrentUsers] = useState([]);
   const auth = useSelector((state) => state.auth);
   let { isAuthenticated, loading } = auth;
 
@@ -60,7 +62,8 @@ const App = () => {
   }, [isAuthenticated]);
   return (
     <Container>
-      <NavBar socket={socket ? socket : null} />
+      <NavBar />
+      {/* <NavBar socket={socket ? socket : null} /> */}
       <Switch>
         {!loading ? (
           <>
@@ -71,27 +74,39 @@ const App = () => {
             <Route
               path="/dashboard/:id"
               render={() => (
-                <Dashboard socket={socket} currentUsers={currentUsers} />
+                // <Dashboard socket={socket} currentUsers={currentUsers} />
+                <Dashboard />
               )}
               exact
             />
             <Route
               path="/profile/:id"
               render={() => (
-                <Dashboard socket={socket} currentUsers={currentUsers} />
+                // <Dashboard socket={socket} currentUsers={currentUsers} />
+                <Dashboard />
               )}
               exact
             />
             <Route
               path="/user/edit"
               render={() => (
-                <ProfileEdit socket={socket} currentUsers={currentUsers} />
+                <ProfileEdit />
+                // <ProfileEdit socket={socket} currentUsers={currentUsers} />
               )}
             />
             <Route
               path="/profile/:id/followers"
               render={() => (
-                <FollowersList socket={socket} currentUsers={currentUsers} />
+                // <FollowersList socket={socket} currentUsers={currentUsers} />
+                <FollowersList />
+              )}
+              exact
+            />
+            <Route
+              path="/profile/:id/following"
+              render={() => (
+                // <FollowersList socket={socket} currentUsers={currentUsers} />
+                <FollowingList />
               )}
               exact
             />

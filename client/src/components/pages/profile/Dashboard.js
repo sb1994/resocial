@@ -15,6 +15,7 @@ const Dashboard = ({ match, socket }) => {
 
   useEffect(() => {
     dispatch(getSearchedUser(params.id));
+
     // if (socket) {
     //   console.log(socket);
     //   console.log("Dashboard Socket Connected");
@@ -30,13 +31,10 @@ const Dashboard = ({ match, socket }) => {
 
   return (
     <Row className="mt-3">
-      {!loading ? (
-        // profile section
+      {loading && searchedUser === undefined ? null : (
         <>
           <ProfileCard searchedUser={searchedUser} />{" "}
         </>
-      ) : (
-        <p>Loading</p>
       )}
     </Row>
   );

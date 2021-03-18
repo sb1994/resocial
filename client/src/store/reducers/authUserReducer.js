@@ -10,6 +10,8 @@ const initialState = {
   user: {},
   searchedUser: {},
   users: [],
+  followers: [],
+  following: [],
 };
 
 const auth = (state = initialState, action) => {
@@ -34,6 +36,28 @@ const auth = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+      };
+    case types.SET_FOLLOWERS_LIST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.SET_FOLLOWERS_LIST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        followers: action.payload,
+      };
+    case types.SET_FOLLOWING_LIST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.SET_FOLLOWING_LIST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        following: action.payload,
       };
     // case types.GET_USERS:
     //   return {

@@ -2,13 +2,12 @@ import React, { useEffect } from "react";
 
 import { LinkContainer } from "react-router-bootstrap";
 import { useHistory } from "react-router-dom";
-import { Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../store/actions/userAuthActions";
 const NavBar = ({ socket }) => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const history = useHistory();
   let { user, isAuthenticated } = auth;
 
   const logoutHandler = () => {

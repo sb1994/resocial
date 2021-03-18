@@ -77,13 +77,50 @@ export const getSearchedUser = (id) => async (dispatch) => {
     });
   }
 };
+export const getFollowers = (id) => async (dispatch) => {
+  // gets the users profile based on the id dispatched from
+  // the url
+  try {
+    let { data } = await axios.get(`/api/users/profile/${id}/followers`);
+    console.log(data.followers.followers);
+    // dispatch(setSearchedUser(data.user));
+    dispatch({
+      type: types.SET_FOLLOWERS_LIST_SUCCESS,
+      payload: data.followers.followers,
+    });
+  } catch (error) {
+    dispatch({
+      type: types.FAIL_AUTH,
+      payload: error.data.message,
+    });
+  }
+};
+export const getFollowing = (id) => async (dispatch) => {
+  // gets the users profile based on the id dispatched from
+  // the url
+  try {
+    let { data } = await axios.get(`/api/users/profile/${id}/following`);
+    console.log(data.following.following);
+    dispatch({
+      type: types.SET_FOLLOWING_LIST_SUCCESS,
+      payload: data.following.following,
+    });
+  } catch (error) {
+    dispatch({
+      type: types.FAIL_AUTH,
+      payload: error.data.message,
+    });
+  }
+};
+
 export const followUser = (id) => async (dispatch) => {
   // follows the users profile based on the id dispatched from
   // the url
   try {
+    // console.log(id);
     let { data } = await axios.post(`/api/users/profile/${id}/follow`);
-
-    console.log(data);
+    console.log({ following: data.currentUser.following });
+    console.log({ followers: data.searchedUser.followers });
     // dispatching the updated user data
     dispatch(setSearchedUser(data.searchedUser));
     dispatch(setLoggedUser(data.currentUser));
@@ -102,7 +139,6 @@ export const unFollowUser = (id) => async (dispatch) => {
     console.log(data);
     dispatch(setSearchedUser(data.searchedUser));
     dispatch(setLoggedUser(data.currentUser));
-    // dispatch(setSearchedUser(data.user));
   } catch (error) {
     dispatch({
       type: types.FAIL_AUTH,

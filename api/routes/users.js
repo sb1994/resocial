@@ -39,17 +39,21 @@ router.post(
     let { following } = currentUser;
     let { followers } = searchedUser;
 
-    //checking if the followee's is in the current users following list
-    let followingIds = following.filter((user) =>
-      //checking if the user exists
-      user.user === id ? user : []
+    // checking if the followee's is in the current users following list
+    let followingIds = following.filter(
+      (user) =>
+        //checking if the user exists
+        user.user === id
     );
 
     //checking if the current user is in the followee's follower list
-    let followerIds = followers.filter((follower) =>
-      //checking if the user exists
-      follower.user === user._id ? user : []
+    let followerIds = followers.filter(
+      (follower) =>
+        //checking if the user exists
+        follower.user === user._id
     );
+
+    console.log(followerIds, followingIds);
 
     if (followingIds.length > 0 && followerIds.length > 0) {
       console.log("user is already following this user");
@@ -65,13 +69,16 @@ router.post(
       };
       searchedUser.followers.push(addedFollower);
 
-      // saving both updatedUsers
+      //   // saving both updatedUsers
       let updatedCurrentUser = await currentUser.save();
       let updatedSearchedUser = await searchedUser.save();
+
+      console.log(updatedCurrentUser, updatedSearchedUser);
       res.json({
         searchedUser: updatedSearchedUser,
         currentUser: updatedCurrentUser,
       });
+      // res/
     }
   })
 );
@@ -81,34 +88,84 @@ router.post(
   asyncHandler(async (req, res) => {
     let { id } = req.params;
     let { user } = req;
-    console.log(user._id, id);
     const searchedUser = await User.findById(id);
     const currentUser = await User.findById(user._id);
 
+    console.log(searchedUser.firstName, searchedUser.followers);
+    console.log("Me", currentUser.following);
     // updating current users following list
+    // let updatedFollowingList = currentUser.following.filter(
+    //   // (user) => user.user === id
+    //   (followee) => followee.user.toString() !== id.toString()
+    //   // followee.user !== id;
+    // );
+
+    // // // // updating the followees followers list
+    // let updatedFollowerList = searchedUser.followers.filter(
+    //   (follower) => follower.user.toString() !== user._id.toString()
+    //   // console.log(follower.user === user._id);
+    // );
     let updatedFollowingList = currentUser.following.filter(
       // (user) => user.user === id
-      (user) => {
-        user.user !== id;
-      }
+      (followee) => followee.user.toString() !== id.toString()
+      // followee.user !== id;
     );
-    currentUser.following = updatedFollowingList;
-    // updating the followees followers list
+
+    // // // updating the followees followers list
     let updatedFollowerList = searchedUser.followers.filter(
-      // (user) => user.user === id
-      (user) => {
-        user.user !== user._id;
-      }
+      (follower) => follower.user.toString() !== user._id.toString()
+      // console.log(follower.user === user._id);
     );
+
+    console.log(searchedUser._id, searchedUser.firstName, updatedFollowerList);
+    console.log(currentUser._id, "me", updatedFollowingList);
+    // console.log(updatedFollowingList);
+    // if (updatedFollowerList.length > 0 && updatedFollowingList.length > 0) {
+    //   console.log("Already following this user can unfollow");
+    currentUser.following = updatedFollowingList;
     searchedUser.followers = updatedFollowerList;
+    // } else {
+    //   console.log("cannot unfollow someone who isnt followed");
+    // }
 
     let updatedSearchedUser = await searchedUser.save();
     let updatedCurrentUser = await currentUser.save();
 
-    // res.json({ user });
+    // res.json({ currentUser, searchedUser });
     res.json({
       currentUser: updatedCurrentUser,
       searchedUser: updatedSearchedUser,
+    });
+    // res.json({
+    //   currentUser,
+    //   searchedUser,
+    // });
+  })
+);
+router.get(
+  "/profile/:id/followers",
+  asyncHandler(async (req, res) => {
+    let { id } = req.params;
+    const followers = await User.findById(id)
+      .populate("followers.user")
+      .select("-password");
+
+    res.json({
+      followers,
+    });
+  })
+);
+router.get(
+  "/profile/:id/following",
+  asyncHandler(async (req, res) => {
+    let { id } = req.params;
+    console.log(id);
+    const following = await User.findById(id)
+      .populate("following.user")
+      .select("-password");
+
+    res.json({
+      following,
     });
   })
 );
