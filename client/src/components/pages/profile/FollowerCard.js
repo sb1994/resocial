@@ -14,8 +14,6 @@ const FollowerCard = ({ followedUser }) => {
   const auth = useSelector((state) => state.auth);
 
   let alreadyFollows;
-
-  const dispatch = useDispatch();
   let { user, isAuthenticated } = auth;
 
   if (followedUser.followers === undefined) {
@@ -47,9 +45,7 @@ const FollowerCard = ({ followedUser }) => {
           alreadyFollows ? (
             <button>Hello</button>
           ) : null
-        ) : (
-          <p>Im following this user</p>
-        )}
+        ) : null}
       </Card>
     </Col>
   );

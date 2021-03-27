@@ -17,6 +17,7 @@ import { Container } from "react-bootstrap";
 import ProfileEdit from "./components/pages/profile/ProfileEdit";
 import FollowersList from "./components/pages/profile/FollowersList";
 import FollowingList from "./components/pages/profile/FollowingList";
+import PostDetail from "./components/posts/PostDetail";
 const App = () => {
   // const [socket, setSocket] = useState(null);
   // const [currentUsers, setCurrentUsers] = useState([]);
@@ -76,6 +77,14 @@ const App = () => {
               render={() => (
                 // <Dashboard socket={socket} currentUsers={currentUsers} />
                 <Dashboard />
+              )}
+              exact
+            />
+            <Route
+              path="/post/:id"
+              render={() => (
+                // <Dashboard socket={socket} currentUsers={currentUsers} />
+                <PostDetail />
               )}
               exact
             />

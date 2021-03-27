@@ -1,11 +1,11 @@
 .profile-card__img-container {
-  height: 20%;
+  height: 5%;
   text-align: center;
 }
 
 .profile-card__img {
   border-radius: 50%;
-  height: 50%;
+  height: 35vh;
 }
 
 .profile-card__info-container {

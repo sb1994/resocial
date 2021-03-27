@@ -16,12 +16,12 @@ const FollowingCard = ({ followingUser }) => {
   const auth = useSelector((state) => state.auth);
   let { user, isAuthenticated } = auth;
 
-  if (followingUser.followers === undefined) {
+  if (followingUser.followers !== undefined && isAuthenticated) {
     console.log("Searched User Followers Not Found");
-  } else {
     alreadyFollows = followingUser.followers.some((follower) => {
       return follower.user.toString() === user._id.toString();
     });
+  } else {
   }
   return (
     <Col lg={3} sm={4}>
@@ -40,14 +40,6 @@ const FollowingCard = ({ followingUser }) => {
             {followingUser.firstName}
           </h4>
         </LinkContainer>
-
-        {followingUser._id !== user._id && isAuthenticated ? (
-          alreadyFollows ? (
-            <button>Hello</button>
-          ) : null
-        ) : (
-          <p>THis user is following me</p>
-        )}
       </Card>
     </Col>
   );

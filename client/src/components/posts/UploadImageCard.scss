@@ -1,0 +1,28 @@
+.upload-card {
+  position: relative;
+
+  img {
+    width: 100%;
+  }
+
+  &__inputs {
+    position: absolute;
+    background-color: white;
+    display: flex;
+    border-radius: 50%;
+    top: 0;
+    right: 0;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    justify-content: center;
+    align-content: center;
+    color: red;
+    border: red 1px solid;
+
+    &:hover {
+      background-color: red;
+      color: white;
+    }
+  }
+}

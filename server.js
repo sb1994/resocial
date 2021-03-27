@@ -33,9 +33,11 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const users = require("./api/routes/users");
+const posts = require("./api/routes/posts");
 
 // attaching the api routes to the app instance
 app.use("/api/users", users);
+app.use("/api/posts", posts);
 
 // ataching the error middleware to the app instance
 app.use(errorHandler);

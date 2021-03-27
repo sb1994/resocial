@@ -1,0 +1,21 @@
+.form .form__description textarea {
+  border: none;
+}
+
+.form .form__description textarea {
+  border: none;
+}
+
+.form .form__upload-inputs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.form .form__upload-inputs span {
+  padding: 10px;
+}
+/*# sourceMappingURL=NavBar.css.map */
