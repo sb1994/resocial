@@ -2,6 +2,7 @@ import axios from "axios";
 import setUserToken from "../../utils/setUserToken";
 import jwt_decode from "jwt-decode";
 import * as types from "./action_types";
+import { uploadProfileImageToFirebase } from "../../utils/functions";
 
 // Register User
 export const registerUser = (userData) => async (dispatch) => {
@@ -55,7 +56,7 @@ export const getCurrentUser = () => async (dispatch) => {
   dispatch(setLoggedUserRequest());
   try {
     let { data } = await axios.get("/api/users/current");
-
+    console.log(data);
     dispatch(setLoggedUser(data));
   } catch (error) {
     dispatch({
@@ -112,7 +113,39 @@ export const getFollowing = (id) => async (dispatch) => {
     });
   }
 };
+export const updateUser = (rawPhoto, firstName, lastName) => async (
+  dispatch,
+  getState
+) => {
+  // uploading the images to firebase
+  // let photos = await uploadImgsToFirebase(rawPhotos);
+  let photo;
 
+  if (rawPhoto !== null) {
+    photo = await uploadProfileImageToFirebase(rawPhoto);
+  } else {
+    console.log(getState().auth.user.profile_pic);
+    photo = getState().auth.user.profile_pic;
+  }
+
+  console.log(photo);
+
+  try {
+    // console.log(photos);
+    let { data } = await axios.post(`/api/users/profile/edit`, {
+      firstName,
+      lastName,
+      photo,
+    });
+    console.log(data);
+    dispatch(setLoggedUser(data));
+  } catch (error) {
+    dispatch({
+      type: types.FAIL_AUTH,
+      payload: error.response.data.message,
+    });
+  }
+};
 export const followUser = (id) => async (dispatch) => {
   // follows the users profile based on the id dispatched from
   // the url

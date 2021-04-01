@@ -155,6 +155,27 @@ router.get(
     });
   })
 );
+router.post(
+  "/profile/edit",
+  protect,
+  asyncHandler(async (req, res) => {
+    let { firstName, lastName, photo } = req.body;
+
+    console.log(req.body);
+
+    // cuurent user to be updated
+    let currentUser = await User.findById(req.user._id);
+
+    currentUser.firstName = firstName;
+    currentUser.lastName = lastName;
+    currentUser.profile_pic = photo;
+
+    console.log(currentUser);
+
+    let user = currentUser.save();
+    res.json(user);
+  })
+);
 router.get(
   "/profile/:id/following",
   asyncHandler(async (req, res) => {
@@ -169,23 +190,27 @@ router.get(
     });
   })
 );
-router.get("/current", protect, async (req, res) => {
-  // console.log(req.user);
-  let { _id } = req.user;
-  // console.log(req.user);
-  //find the user by email
-  const user = await User.findById(_id).select("-password");
-  // console.log(user);
+router.get(
+  "/current",
+  protect,
+  asyncHandler(async (req, res) => {
+    // console.log(req.user);
+    let { _id } = req.user;
+    // console.log(req.user);
+    //find the user by email
+    const user = await User.findById(_id).select("-password");
+    // console.log(user);
 
-  //if the user exist we then check the password
+    //if the user exist we then check the password
 
-  if (!user) {
-    res.status(404);
-    throw new Error("User not found");
-  } else {
-    res.json(user).status(200);
-  }
-});
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    } else {
+      res.json(user).status(200);
+    }
+  })
+);
 router.post(
   "/register",
   asyncHandler(async (req, res) => {

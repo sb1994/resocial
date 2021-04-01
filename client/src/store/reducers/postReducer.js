@@ -58,6 +58,15 @@ const post = (state = initialState, action) => {
         postsLoading: false,
         selectedPost: action.payload.selectedPost,
       };
+    case types.ADD_COMMENT_REQUEST:
+      return {
+        ...state,
+      };
+    case types.ADD_COMMENT_SUCCESS:
+      return {
+        ...state,
+        selectedPost: action.payload.selectedPost,
+      };
     case types.REMOVE_LIKE_POST_REQUEST:
       return {
         ...state,

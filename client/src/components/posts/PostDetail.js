@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row, Carousel } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { getSelectedPost } from "../../store/actions/postActions";
+import {
+  createComment,
+  getSelectedPost,
+} from "../../store/actions/postActions";
 import Moment from "react-moment";
 import "./PostDetail.css";
 import HeaderDetails from "./HeaderDetails";
@@ -15,7 +18,24 @@ const PostDetail = () => {
   const post = useSelector((state) => state.post);
   const auth = useSelector((state) => state.auth);
 
+  const [commentText, setCommentText] = useState("");
+
   let { selectedPost, postsLoading } = post;
+
+  const handleChangeCommentText = (e) => {
+    setCommentText(e.target.value);
+  };
+  const handleCommentEnter = (e) => {
+    // console.log(e.);
+
+    if (e.key === "Enter" && commentText !== "") {
+      console.log(e.key);
+      // console.log(commentText);
+      dispatch(createComment(selectedPost._id, commentText));
+
+      setCommentText("");
+    }
+  };
 
   let { user, isAuthenticated } = auth;
   // let { user } = selectedPost;
@@ -52,7 +72,7 @@ const PostDetail = () => {
                   : null}
               </Carousel>
             </Col>
-            <Col lg={6} sm={12} className="post-detail__content mt-3">
+            <Col lg={6} sm={12} className="post-detail__content mt-3 ">
               <Row>
                 {selectedPost.user !== undefined ? (
                   <HeaderDetails
@@ -70,10 +90,21 @@ const PostDetail = () => {
               <Row>
                 {!postsLoading && selectedPost.comments !== undefined ? (
                   <PostCommentsList comments={selectedPost.comments} />
-                ) : null}
+                ) : (
+                  <h2>No Comments</h2>
+                )}
+              </Row>
+              <Row>
+                <input
+                  type="text"
+                  className="post-detail__content--comment-input"
+                  value={commentText}
+                  placeholder="Press enter to save post"
+                  onChange={handleChangeCommentText}
+                  onKeyPress={handleCommentEnter}
+                />
               </Row>
             </Col>
-            <Col sm={12} lg={6}></Col>
           </Row>
         )}
       </Col>

@@ -1,0 +1,24 @@
+.photo-upload {
+  text-align: center;
+  position: relative;
+  &__img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+  }
+  &__btn {
+    position: absolute;
+    opacity: 0;
+    height: 50px;
+    left: 0;
+    top: 150px;
+    background: rgba(250, 255, 255, 0.5);
+    color: orange;
+    width: 100%;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

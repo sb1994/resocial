@@ -28,9 +28,12 @@ import {
 import "./NavBar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../store/actions/userAuthActions";
+
+import { createPost } from "../../store/actions/postActions";
 import UploadImageCard from "../posts/UploadImageCard";
 const NavBar = ({ socket }) => {
   const [show, setShow] = useState(true);
+  const [description, setDescription] = useState("");
   const [photosFiles, setPhotosFiles] = useState([]);
   const [photosFilesUrls, setPhotosFilesUrls] = useState([]);
 
@@ -85,6 +88,15 @@ const NavBar = ({ socket }) => {
     } else {
       console.log("Not working");
     }
+  };
+  const handleCreatePost = (e) => {
+    console.log(photosFiles, description);
+
+    dispatch(createPost(user._id, photosFiles, description));
+    setPhotosFilesUrls([]);
+    setPhotosFiles([]);
+    setDescription("");
+    setShow(false);
   };
 
   useEffect(() => {
@@ -146,6 +158,8 @@ const NavBar = ({ socket }) => {
                 name="description"
                 className="w-100 form__description-input"
                 id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 placeholder={`${user.firstName}, what is on your mind? `}
               ></textarea>
             </Col>
@@ -169,7 +183,11 @@ const NavBar = ({ socket }) => {
               </Row>
             </Col>
             <Col lg={12}>
-              <Button variant="primary" className="btn-block">
+              <Button
+                variant="primary"
+                className="btn-block"
+                onClick={handleCreatePost}
+              >
                 Save
               </Button>
             </Col>

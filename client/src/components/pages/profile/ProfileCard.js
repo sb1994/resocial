@@ -58,7 +58,7 @@ const ProfileCard = ({ searchedUser }) => {
                 {user._id === searchedUser._id && isAuthenticated ? (
                   <Link
                     className="btn btn-warning profile-card__info-container-link"
-                    to="/user/edit"
+                    to={`/user/${user._id}/edit`}
                   >
                     Edit Profile
                   </Link>

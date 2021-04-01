@@ -36,12 +36,11 @@ router.post(
     let { id } = req.params;
     let { user } = req;
     let { photos, description, feedId, author } = req.body;
+
+    console.log(req.body);
     console.log(id);
 
-    if (description === "") {
-      res.status(401);
-      throw new Error("Please give a description for this image");
-    } else if (photos.length <= 0) {
+    if (photos.length <= 0) {
       res.status(401);
       throw new Error("Please upload at least one image");
     } else {
@@ -55,7 +54,8 @@ router.post(
       let savedPost = await newPost.save();
 
       savedPost = await savedPost.populate("user ").execPopulate();
-      res.json(savedPost);
+      res.json(newPost);
+      // res.json(savedPost);
     }
     // const post = await Post.findById(id).populate("user");
     // res.json({ post });

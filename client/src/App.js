@@ -26,40 +26,15 @@ const App = () => {
 
   const setAuthState = () => {
     // console.log(token);
+  };
+  useEffect(() => {
+    // setupSocket();
     const token = localStorage.getItem("token");
-    console.log(isAuthenticated);
 
     if (token) {
-      console.log("authenticated");
       setUserToken(token);
       store.dispatch(getCurrentUser());
     }
-    // if (!loading && isAuthenticated && !socket) {
-    //   console.log("can create the socket");
-    //   const newSocket = io("http://localhost:5000", {
-    //     query: {
-    //       token,
-    //     },
-    //   });
-    //   newSocket.on("connectedUsers", (data) => {
-    //     setCurrentUsers(data.connectedUsers);
-    //     console.log(data);
-    //   });
-
-    //   newSocket.on("disconnect", () => {
-    //     setTimeout(setAuthState, 3000);
-    //     setSocket(null);
-    //   });
-
-    //   newSocket.on("connection", (data) => {
-    //     // console.log(data);
-    //   });
-    //   setSocket(newSocket);
-    // }
-  };
-  useEffect(() => {
-    setAuthState();
-    // setupSocket();
   }, [isAuthenticated]);
   return (
     <Container>
@@ -97,11 +72,11 @@ const App = () => {
               exact
             />
             <Route
-              path="/user/edit"
-              render={() => (
-                <ProfileEdit />
+              path="/user/:id/edit"
+              component={
+                ProfileEdit
                 // <ProfileEdit socket={socket} currentUsers={currentUsers} />
-              )}
+              }
             />
             <Route
               path="/profile/:id/followers"
