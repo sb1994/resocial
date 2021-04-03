@@ -101,19 +101,23 @@ const ProfileEdit = () => {
               />
             </Col>
           </Form.Group>
-          <Form.Group>
-            <Form.Label>Lastname:</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Edit First Name"
-              value={lastName}
-              name="lastName"
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Button onClick={handleUpdate}>Update</Button>
-          </Form.Group>
+          <Col>
+            <Form.Group>
+              <Form.Label>Lastname:</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Edit First Name"
+                value={lastName}
+                name="lastName"
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group>
+              <Button onClick={handleUpdate}>Update</Button>
+            </Form.Group>
+          </Col>
         </Form>
       </FormContainer>
     </Row>

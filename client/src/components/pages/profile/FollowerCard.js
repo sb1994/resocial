@@ -41,11 +41,11 @@ const FollowerCard = ({ followedUser }) => {
           </h4>
         </LinkContainer>
 
-        {followedUser._id !== user._id && isAuthenticated ? (
-          alreadyFollows ? (
-            <button>Hello</button>
-          ) : null
-        ) : null}
+        {followedUser._id !== user._id && isAuthenticated
+          ? alreadyFollows
+            ? null
+            : null
+          : null}
       </Card>
     </Col>
   );

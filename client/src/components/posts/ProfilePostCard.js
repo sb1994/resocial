@@ -18,7 +18,7 @@ import {
 
 const ProfilePostCard = ({ post }) => {
   return (
-    <Col lg={3} sm={4} xs={6} className="profile-post-card">
+    <Col lg={3} sm={4} xs={6} className="profile-post-card mb-3">
       <LinkContainer to={`/post/${post._id}`}>
         <div className="profile-post-card__img-container">
           <img

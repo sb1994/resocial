@@ -95,14 +95,16 @@ const PostDetail = () => {
                 )}
               </Row>
               <Row>
-                <input
-                  type="text"
-                  className="post-detail__content--comment-input"
-                  value={commentText}
-                  placeholder="Press enter to save post"
-                  onChange={handleChangeCommentText}
-                  onKeyPress={handleCommentEnter}
-                />
+                {isAuthenticated ? (
+                  <input
+                    type="text"
+                    className="post-detail__content--comment-input"
+                    value={commentText}
+                    placeholder="Press enter to save post"
+                    onChange={handleChangeCommentText}
+                    onKeyPress={handleCommentEnter}
+                  />
+                ) : null}
               </Row>
             </Col>
           </Row>

@@ -12,19 +12,8 @@ import {
   Col,
 } from "react-bootstrap";
 import { FontAwesomeIcon as Icon } from "@fortawesome/react-fontawesome";
-import {
-  faEye as Watched,
-  faCoffee,
-  faHeart as Liked,
-  faInfo,
-  fa,
-  faComments,
-  faUpload,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  faHeart as NotLiked,
-  faEye as NotWatched,
-} from "@fortawesome/free-regular-svg-icons";
+import { faComments, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import "./NavBar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../store/actions/userAuthActions";
@@ -32,7 +21,7 @@ import { logoutUser } from "../../store/actions/userAuthActions";
 import { createPost } from "../../store/actions/postActions";
 import UploadImageCard from "../posts/UploadImageCard";
 const NavBar = ({ socket }) => {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const [description, setDescription] = useState("");
   const [photosFiles, setPhotosFiles] = useState([]);
   const [photosFilesUrls, setPhotosFilesUrls] = useState([]);
@@ -122,18 +111,32 @@ const NavBar = ({ socket }) => {
     });
   };
   return (
-    <Navbar bg="dark" variant="dark" expand="sm" collapseOnSelect>
+    <Navbar bg="light" variant="light" expand="sm" collapseOnSelect>
       <Navbar.Brand>ReSocial </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ml-auto">
           {isAuthenticated ? (
             <>
-              <Button onClick={setShow}>Add Post</Button>
+              <span
+                className="mt-2"
+                onClick={setShow}
+                style={{ cursor: "pointer" }}
+              >
+                <Icon icon={faPaperPlane} />
+              </span>
               <LinkContainer to={`/dashboard/${user._id}`}>
-                <Nav.Link>Dashboard</Nav.Link>
+                <Nav.Link>
+                  <Icon icon={faUser} />
+                </Nav.Link>
               </LinkContainer>
-              <Button onClick={logoutHandler}>Logout</Button>
+              <span
+                className="mt-2"
+                onClick={logoutHandler}
+                style={{ cursor: "pointer" }}
+              >
+                Logout
+              </span>
             </>
           ) : (
             <>
