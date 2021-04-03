@@ -78,3 +78,7 @@ In the implentation of this application there is 2 mongo models:
 ### User
 
 > ![image](/uploads/user.png)
+
+### Post
+
+> ![image](/uploads/post.png)
